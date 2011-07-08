@@ -19,7 +19,7 @@ module Web.Zwaluw (
   , manyl, somel, chainl, chainl1
   
     -- * Built-in routers
-  , int, integer, string, char, digit, hexDigit
+  , int, integer, string, text, char, digit, hexDigit
   , (/), part
   
   , rNil, rCons, rList, rListSep
@@ -34,6 +34,7 @@ import Control.Monad (guard)
 import Control.Category
 import Data.Monoid
 import Data.Char (isDigit, isHexDigit, intToDigit, digitToInt)
+import qualified Data.Text as T
 
 import Web.Zwaluw.Core
 import Web.Zwaluw.TH
@@ -116,6 +117,15 @@ string = val parse' serialize
                 , dropWhile (/= '/') s
                 )]
     serialize = return . (++)
+
+-- | Routes any text, upto a slash ("/").
+text :: Router r (T.Text :- r)
+text = val parse' serialize
+  where
+    parse' s = [( T.pack . takeWhile (/= '/') $ s
+                , dropWhile (/= '/') s
+                )]
+    serialize = return . (++) . T.unpack
 
 -- | Routes one character satisfying the given predicate.
 satisfy :: (Char -> Bool) -> Router r (Char :- r)
