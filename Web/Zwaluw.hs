@@ -108,9 +108,14 @@ int = readshow
 integer :: Router r (Integer :- r)
 integer = readshow
 
--- | Routes any string.
+-- | Routes any string, upto a slash ("/").
 string :: Router r (String :- r)
-string = val (\s -> [(s, "")]) (return . (++))
+string = val parse' serialize
+  where
+    parse' s = [( takeWhile (/= '/') s
+                , dropWhile (/= '/') s
+                )]
+    serialize = return . (++)
 
 -- | Routes one character satisfying the given predicate.
 satisfy :: (Char -> Bool) -> Router r (Char :- r)
