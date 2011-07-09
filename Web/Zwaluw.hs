@@ -109,22 +109,24 @@ int = readshow
 integer :: Router r (Integer :- r)
 integer = readshow
 
--- | Routes any string, upto a slash ("/").
+-- | Routes any non-empty string, upto a slash ("/").
 string :: Router r (String :- r)
 string = val parse' serialize
   where
-    parse' s = [( takeWhile (/= '/') s
-                , dropWhile (/= '/') s
-                )]
+    parse' "" = []
+    parse' s  = [( takeWhile (/= '/') s
+                 , dropWhile (/= '/') s
+                 )]
     serialize = return . (++)
 
--- | Routes any text, upto a slash ("/").
+-- | Routes any non-empty text, upto a slash ("/").
 text :: Router r (T.Text :- r)
 text = val parse' serialize
   where
-    parse' s = [( T.pack . takeWhile (/= '/') $ s
-                , dropWhile (/= '/') s
-                )]
+    parse' "" = []
+    parse' s  = [( T.pack . takeWhile (/= '/') $ s
+                 , dropWhile (/= '/') s
+                 )]
     serialize = return . (++) . T.unpack
 
 -- | Routes one character satisfying the given predicate.
