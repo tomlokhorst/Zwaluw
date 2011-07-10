@@ -27,9 +27,12 @@ module Web.Zwaluw (
   , rLeft, rRight, rEither
   , rNothing, rJust, rMaybe
   , rTrue, rFalse
+
+  -- * FilePath data type and router
+  , FilePath, filePath
   ) where
 
-import Prelude hiding ((.), id, (/))
+import Prelude hiding ((.), id, (/), FilePath)
 import Control.Monad (guard)
 import Control.Category
 import Data.Monoid
@@ -193,3 +196,17 @@ rMaybe r = rJust . r <> rNothing
 $(deriveRouters ''Bool)
 rTrue  :: Router r (Bool :- r)
 rFalse :: Router r (Bool :- r)
+
+-- | Represents a file path, including slashes
+newtype FilePath = FilePath { unFilePath :: T.Text }
+
+instance Show FilePath where
+  showsPrec p (FilePath t) r = showsPrec p t r
+
+filePath :: Router r (FilePath :- r)
+filePath = val parse' serialize
+  where
+    parse' "" = []
+    parse' s  = [(FilePath . T.pack $ s, "")]
+    serialize = return . (++) . T.unpack . unFilePath
+
