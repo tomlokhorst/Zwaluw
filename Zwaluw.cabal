@@ -1,5 +1,5 @@
 Name:           Zwaluw
-Version:        0.2.1
+Version:        0.2.2
 Synopsis:       Combinators for bidirectional URL routing
 Description:   	Combinators for bidirectional URL routing
 
@@ -24,4 +24,7 @@ Library
                     Web.Zwaluw.Core, 
                     Web.Zwaluw.TH, 
                     Web.Zwaluw.Regular
-  Build-Depends:    base >= 4 && < 5, template-haskell >= 2.4 && < 2.6, regular >= 0.3 && < 0.4, text >= 0.11 && < 0.12
+  Build-Depends:    base >= 4.5 && < 5,
+                    template-haskell >= 2.4 && < 2.9,
+                    regular >= 0.3 && < 0.4,
+                    text >= 0.11 && < 0.12

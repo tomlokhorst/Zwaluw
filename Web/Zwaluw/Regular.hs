@@ -29,7 +29,7 @@ type Routers r = RouterList (PF r) r
 mkRouters :: (MkRouters (PF r), Regular r) => Routers r
 mkRouters = mkRouters' to (Just . from)
 
-data family RouterList f r
+data family RouterList (f :: * -> *) r
 class MkRouters (f :: * -> *) where
   mkRouters' :: (f r -> r) -> (r -> Maybe (f r)) -> RouterList f r
 

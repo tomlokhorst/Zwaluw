@@ -5,7 +5,7 @@
 
 module Web.Zwaluw (
     -- * Types
-    Router, (:-)(..), (<>), (.~)
+    Router, (:-)(..), (.~)
     
     -- * Running routers
   , parse, unparse
@@ -41,13 +41,6 @@ import qualified Data.Text as T
 
 import Web.Zwaluw.Core
 import Web.Zwaluw.TH
-
-
-infixr 8 <>
-
--- | Infix operator for 'mappend'.
-(<>) :: Monoid m => m -> m -> m
-(<>) = mappend
 
 
 -- | Make a router optional.
